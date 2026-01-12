@@ -3,6 +3,8 @@ package com.iset.gymmanagement.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Table(name = "vente_produit")
@@ -15,7 +17,9 @@ public class VenteProduit {
     @NotNull(message = "La vente est obligatoire")
     @ManyToOne
     @JoinColumn(name = "vente_id", nullable = false)
+    @JsonBackReference
     private Vente vente;
+
 
     @NotNull(message = "Le produit est obligatoire")
     @ManyToOne

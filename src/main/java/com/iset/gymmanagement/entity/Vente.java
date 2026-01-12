@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "vente")
@@ -29,7 +31,9 @@ public class Vente {
     private BigDecimal montantTotal;
 
     @OneToMany(mappedBy = "vente", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<VenteProduit> produits;
+
 
     public Vente() {}
 
