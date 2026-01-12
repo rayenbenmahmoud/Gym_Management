@@ -4,21 +4,22 @@ import com.iset.gymmanagement.entity.User;
 import com.iset.gymmanagement.entity.Role;
 import jakarta.servlet.http.HttpSession;
 
+import com.iset.gymmanagement.exception.UnauthorizedException;
+import com.iset.gymmanagement.exception.ForbiddenException;
+
 public class AuthUtil {
 
-    // 🔐 1. Check login
     public static User checkLogin(HttpSession session) {
         Object obj = session.getAttribute("USER");
         if (obj == null) {
-            throw new RuntimeException("Utilisateur non authentifié");
+            throw new UnauthorizedException("Utilisateur non authentifié");
         }
         return (User) obj;
     }
 
-    // 🔒 2. Check admin
     public static void checkAdmin(User user) {
         if (user.getRole() != Role.ADMIN) {
-            throw new RuntimeException("Accès interdit (ADMIN seulement)");
+            throw new ForbiddenException("Accès réservé à l'administrateur");
         }
     }
 }
