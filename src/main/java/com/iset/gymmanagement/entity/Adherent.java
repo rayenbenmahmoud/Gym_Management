@@ -2,11 +2,16 @@ package com.iset.gymmanagement.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.hibernate.annotations.*;
 
 import java.time.LocalDate;
 
+
+
 @Entity
 @Table(name = "adherent")
+@SQLDelete(sql = "UPDATE adherent SET deleted = true WHERE id=?")
+@SQLRestriction("deleted = false")
 public class Adherent {
 
     @Id
@@ -35,6 +40,8 @@ public class Adherent {
     @NotNull(message = "La date de naissance est obligatoire")
     @Column(name = "date_naissance")
     private LocalDate dateNaissance;
+
+    private boolean deleted = Boolean.FALSE;
 
     public Adherent() {}
 
@@ -80,5 +87,11 @@ public class Adherent {
 
     public void setDateNaissance(LocalDate dateNaissance) {
         this.dateNaissance = dateNaissance;
+    }
+
+    public  boolean getDeleted(){return deleted;}
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

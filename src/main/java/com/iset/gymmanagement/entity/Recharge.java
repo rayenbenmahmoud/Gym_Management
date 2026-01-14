@@ -2,6 +2,9 @@ package com.iset.gymmanagement.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -20,7 +23,7 @@ public class Recharge {
     @NotNull(message = "Le montant est obligatoire")
     @DecimalMin(value = "0.1", inclusive = true, message = "Le montant doit être supérieur à 0")
     @Digits(integer = 10, fraction = 2, message = "Format du montant invalide")
-    @Column(nullable = false, precision = 12, scale = 2) // précision pour BigDecimal
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal amount;
 
     @NotNull(message = "L'adhérent est obligatoire")
@@ -28,7 +31,6 @@ public class Recharge {
     @JoinColumn(name = "adherent_id")
     private Adherent adherent;
 
-    // ===== Constructors =====
 
     public Recharge() {}
 
@@ -38,7 +40,6 @@ public class Recharge {
         this.adherent = adherent;
     }
 
-    // ===== Getters & Setters =====
 
     public Long getId() {
         return id;

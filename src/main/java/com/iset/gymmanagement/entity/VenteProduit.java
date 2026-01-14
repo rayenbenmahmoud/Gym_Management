@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
@@ -23,6 +25,7 @@ public class VenteProduit {
 
     @NotNull(message = "Le produit est obligatoire")
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "produit_id", nullable = false)
     private Product produit;
 
@@ -34,12 +37,11 @@ public class VenteProduit {
     @NotNull(message = "Le prix unitaire est obligatoire")
     @DecimalMin(value = "0.01", inclusive = true, message = "Le prix unitaire doit être supérieur à 0")
     @Digits(integer = 10, fraction = 2, message = "Format du prix unitaire invalide")
-    @Column(name = "prix_unitaire", nullable = false, precision = 12, scale = 2) // تعديل للدقة
+    @Column(name = "prix_unitaire", nullable = false, precision = 12, scale = 2)
     private BigDecimal prixUnitaire;
 
     public VenteProduit() {}
 
-    // ===== Getters & Setters =====
 
     public Long getId() {
         return id;

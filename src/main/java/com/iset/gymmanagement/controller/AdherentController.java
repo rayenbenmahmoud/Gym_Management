@@ -5,7 +5,7 @@ import com.iset.gymmanagement.entity.User;
 import com.iset.gymmanagement.security.AuthUtil;
 import com.iset.gymmanagement.service.AdherentService;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;  // ✅ مهم جدًا
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +21,16 @@ public class AdherentController {
         this.adherentService = adherentService;
     }
 
-    // ➕ Ajouter adhérent (ADMIN فقط)
+    /**
+     * Cette méthode permet de créer un nouvel adhérent.
+     * L'accès est réservé aux utilisateurs ayant le rôle ADMIN.
+     * @param adherent les informations de l'adhérent à créer
+     * @param session la session HTTP utilisée pour vérifier l'authentification
+     * @return l'adhérent créé
+     */
     @PostMapping
     public Adherent create(
-            @Valid @RequestBody Adherent adherent,  // ✅ @Valid هنا
+            @Valid @RequestBody Adherent adherent,
             HttpSession session) {
 
         User user = AuthUtil.checkLogin(session);
@@ -33,7 +39,12 @@ public class AdherentController {
         return adherentService.addAdherent(adherent);
     }
 
-    // 📋 Liste des adhérents (ADMIN + EMPLOYEE)
+    /**
+     * Cette méthode retourne la liste de tous les adhérents.
+     * L'utilisateur doit être authentifié.
+     * @param session la session HTTP utilisée pour vérifier l'authentification
+     * @return la liste des adhérents
+     */
     @GetMapping
     public List<Adherent> getAll(HttpSession session) {
 
@@ -42,7 +53,13 @@ public class AdherentController {
         return adherentService.getAllAdherents();
     }
 
-    // 🔍 Détail adhérent (ADMIN + EMPLOYEE)
+    /**
+     * Cette méthode permet de récupérer les informations d'un adhérent
+     * à partir de son identifiant. L'utilisateur doit être authentifié.
+     * @param id l'identifiant de l'adhérent
+     * @param session la session HTTP utilisée pour vérifier l'authentification
+     * @return l'adhérent correspondant à l'identifiant
+     */
     @GetMapping("/{id}")
     public Adherent getById(
             @PathVariable Long id,
@@ -53,11 +70,18 @@ public class AdherentController {
         return adherentService.getAdherentById(id);
     }
 
-    // ✏️ Modifier adhérent (ADMIN فقط)
+    /**
+     * Cette méthode permet de mettre à jour les informations d'un adhérent existant.
+     * L'accès est réservé aux utilisateurs ayant le rôle ADMIN.
+     * @param id l'identifiant de l'adhérent à modifier
+     * @param adherent les nouvelles informations de l'adhérent
+     * @param session la session HTTP utilisée pour vérifier l'authentification
+     * @return l'adhérent mis à jour
+     */
     @PutMapping("/{id}")
     public Adherent update(
             @PathVariable Long id,
-            @Valid @RequestBody Adherent adherent,  // ✅ @Valid هنا أيضًا
+            @Valid @RequestBody Adherent adherent,
             HttpSession session) {
 
         User user = AuthUtil.checkLogin(session);
@@ -66,7 +90,12 @@ public class AdherentController {
         return adherentService.updateAdherent(id, adherent);
     }
 
-    // 🗑️ Supprimer adhérent (ADMIN فقط)
+    /**
+     * Cette méthode permet de supprimer un adhérent à partir de son identifiant.
+     * L'accès est réservé aux utilisateurs ayant le rôle ADMIN.
+     * @param id l'identifiant de l'adhérent à supprimer
+     * @param session la session HTTP utilisée pour vérifier l'authentification
+     */
     @DeleteMapping("/{id}")
     public void delete(
             @PathVariable Long id,

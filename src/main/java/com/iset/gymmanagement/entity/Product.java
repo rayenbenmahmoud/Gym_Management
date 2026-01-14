@@ -2,10 +2,15 @@ package com.iset.gymmanagement.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "product")
+@SQLDelete(sql = "UPDATE adherent SET deleted = true WHERE id=?")
+@SQLRestriction("deleted = false")
 public class Product {
 
     @Id
@@ -23,7 +28,7 @@ public class Product {
     @NotNull(message = "Le prix est obligatoire")
     @DecimalMin(value = "0.0", inclusive = false, message = "Le prix doit être supérieur à 0")
     @Digits(integer = 10, fraction = 2, message = "Format du prix invalide")
-    @Column(nullable = false, precision = 12, scale = 2) // précision pour BigDecimal
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal prix;
 
     @NotNull(message = "La quantité en stock est obligatoire")
@@ -33,6 +38,8 @@ public class Product {
 
     @Size(max = 150, message = "Le nom de l'image est trop long")
     private String image;
+
+    private boolean deleted = Boolean.FALSE;
 
     public Product() {}
 
@@ -90,5 +97,11 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public  boolean getDeleted(){return deleted;}
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

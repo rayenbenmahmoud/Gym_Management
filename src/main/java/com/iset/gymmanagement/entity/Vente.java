@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
@@ -22,12 +24,13 @@ public class Vente {
     @NotNull(message = "L'adhérent est obligatoire")
     @ManyToOne
     @JoinColumn(name = "adherent_id", nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Adherent adherent;
 
     @NotNull(message = "Le montant total est obligatoire")
     @DecimalMin(value = "0.01", inclusive = true, message = "Le montant total doit être supérieur à 0")
     @Digits(integer = 10, fraction = 2, message = "Format du montant total invalide")
-    @Column(name = "montant_total", nullable = false, precision = 12, scale = 2) // تعديل للدقة
+    @Column(name = "montant_total", nullable = false, precision = 12, scale = 2)
     private BigDecimal montantTotal;
 
     @OneToMany(mappedBy = "vente", cascade = CascadeType.ALL)
@@ -37,7 +40,6 @@ public class Vente {
 
     public Vente() {}
 
-    // ===== Getters & Setters =====
 
     public Long getId() {
         return id;
@@ -79,7 +81,7 @@ public class Vente {
         this.produits = produits;
         if (produits != null) {
             for (VenteProduit vp : produits) {
-                vp.setVente(this); // يربط كل منتج بهذه البيع تلقائيًا
+                vp.setVente(this);
             }
         }
     }

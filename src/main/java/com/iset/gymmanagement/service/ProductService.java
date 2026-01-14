@@ -19,59 +19,81 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    // ===========================
-    // 1️⃣ إضافة منتج
-    // ===========================
+    /**
+     * Cette méthode ajoute un nouveau produit dans la base de données.
+     * @param product le produit à ajouter
+     * @return le produit enregistré
+     */
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
 
-    // ===========================
-    // 2️⃣ تعديل منتج
-    // ===========================
+    /**
+     * Cette méthode met à jour les informations d'un produit existant
+     * en utilisant son identifiant. Si le produit n'existe pas, une
+     * exception est levée.
+     * @param id l'identifiant du produit à modifier
+     * @param updatedProduct les nouvelles données du produit
+     * @return le produit mis à jour
+     */
     public Product updateProduct(Long id, Product updatedProduct) {
 
         Product existing = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit avec l'id " + id + " n'existe pas."));
 
         existing.setNom(updatedProduct.getNom());
-        existing.setPrix(updatedProduct.getPrix()); // BigDecimal
+        existing.setPrix(updatedProduct.getPrix());
         existing.setQuantiteStock(updatedProduct.getQuantiteStock());
 
         return productRepository.save(existing);
     }
 
-    // ===========================
-    // 3️⃣ حذف منتج
-    // ===========================
+    /**
+     * Cette méthode supprime logiquement un produit de la base de données
+     * à partir de son identifiant. Si le produit n'existe pas,
+     * une exception est levée. C'est un soft delete.
+     * @param id l'identifiant du produit à supprimer
+     */
     public void deleteProduct(Long id) {
 
-        if (!productRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Produit avec l'id " + id + " n'existe pas.");
-        }
+        Product product = productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Produit avec l'id " + id + " n'existe pas.")
+                );
 
-        productRepository.deleteById(id);
+        product.setDeleted(true);
+        productRepository.save(product);
     }
 
-    // ===========================
-    // 4️⃣ إرجاع كل المنتجات
-    // ===========================
+    /**
+     * Cette méthode retourne la liste de tous les produits
+     * non supprimés.
+     * @return la liste des produits
+     */
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    // ===========================
-    // 5️⃣ إرجاع منتج حسب ID
-    // ===========================
+    /**
+     * Cette méthode récupère un produit en utilisant son identifiant.
+     * Si aucun produit n'est trouvé, une exception est levée.
+     * @param id l'identifiant du produit recherché
+     * @return le produit correspondant à l'identifiant
+     */
     public Product getProductById(Long id) {
 
         return productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit avec l'id " + id + " n'existe pas."));
     }
 
-    // ===========================
-    // 6️⃣ تحديث المخزون بعد بيع
-    // ===========================
+    /**
+     * Cette méthode met à jour la quantité en stock d'un produit
+     * après une vente. Elle vérifie d'abord si la quantité demandée
+     * est disponible en stock. Si le stock est insuffisant, une
+     * exception est levée.
+     * @param productId l'identifiant du produit vendu
+     * @param quantitySold la quantité vendue
+     */
     public void updateStockAfterSale(Long productId, int quantitySold) {
 
         Product product = productRepository.findById(productId)

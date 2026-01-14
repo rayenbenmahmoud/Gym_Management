@@ -19,12 +19,21 @@ public class DashboardService {
         this.venteProduitRepository = venteProduitRepository;
     }
 
-    // ✅ عدد عمليات البيع
+    /**
+     * Cette méthode retourne le nombre total de ventes
+     * enregistrées dans la base de données.
+     * @return le nombre total de ventes
+     */
     public long totalVentes() {
         return venteRepository.count();
     }
 
-    // ✅ Top 5 produits
+    /**
+     * Cette méthode retourne la liste des produits les plus vendus
+     * en se basant sur les ventes enregistrées. Elle limite le résultat
+     * aux cinq premiers produits.
+     * @return la liste des cinq produits les plus vendus
+     */
     public List<TopProduitDTO> topProduits() {
         return venteProduitRepository.findTopProduits()
                 .stream()

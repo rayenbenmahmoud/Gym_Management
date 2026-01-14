@@ -15,13 +15,17 @@ public class Card {
     @NotNull(message = "Le solde est obligatoire")
     @DecimalMin(value = "0.0", inclusive = true, message = "Le solde ne peut pas être négatif")
     @Digits(integer = 10, fraction = 2, message = "Format du solde invalide")
-    @Column(nullable = false, precision = 12, scale = 2) // précision et décimales pour BigDecimal
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal solde;
 
     @NotNull(message = "L'adhérent est obligatoire")
     @OneToOne
     @JoinColumn(name = "adherent_id", nullable = false)
     private Adherent adherent;
+
+    @Column(nullable = false)
+    private boolean active = true;
+
 
     public Card() {}
 
@@ -49,4 +53,13 @@ public class Card {
     public void setAdherent(Adherent adherent) {
         this.adherent = adherent;
     }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
 }

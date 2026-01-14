@@ -1,5 +1,6 @@
 package com.iset.gymmanagement.service;
 
+import com.iset.gymmanagement.dto.RechargeDTO;
 import com.iset.gymmanagement.entity.*;
 import com.iset.gymmanagement.exception.ResourceNotFoundException;
 import com.iset.gymmanagement.repository.*;
@@ -27,7 +28,14 @@ public class CardService {
         this.rechargeRepository = rechargeRepository;
     }
 
-    // 1️⃣ شحن الرصيد
+    /**
+     * Cette méthode permet de recharger la carte d'un adhérent
+     * avec un montant donné. Elle met à jour le solde de la carte
+     * puis enregistre l'opération de recharge dans l'historique.
+     * @param adherentId l'identifiant de l'adhérent dont la carte sera rechargée
+     * @param montant le montant à ajouter au solde de la carte
+     * @return la carte mise à jour après la recharge
+     */
     public Card rechargeCard(Long adherentId, BigDecimal montant) {
         Adherent adherent = adherentRepository.findById(adherentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Adhérent avec l'id " + adherentId + " n'existe pas."));
@@ -35,11 +43,9 @@ public class CardService {
         Card card = cardRepository.findByAdherent(adherent)
                 .orElseThrow(() -> new ResourceNotFoundException("Carte de l'adhérent introuvable."));
 
-        // زيادة الرصيد
         card.setSolde(card.getSolde().add(montant));
         cardRepository.save(card);
 
-        // تسجيل العملية في historique
         Recharge recharge = new Recharge();
         recharge.setAdherent(adherent);
         recharge.setAmount(montant);
@@ -49,18 +55,29 @@ public class CardService {
         return card;
     }
 
-    // 2️⃣ عرض الرصيد
+    /**
+     * Cette méthode retourne le solde actuel d'une carte
+     * en utilisant son identifiant. Si la carte n'existe pas,
+     * une exception est levée.
+     * @param cardId l'identifiant de la carte
+     * @return le solde de la carte
+     */
     public BigDecimal getSolde(Long cardId) {
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Carte avec l'id " + cardId + " n'existe pas."));
         return card.getSolde();
     }
 
-    // 3️⃣ عرض كل عمليات الشحن لمشترك
-    public List<Recharge> getRechargesByAdherent(Long adherentId) {
-        Adherent adherent = adherentRepository.findById(adherentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Adhérent avec l'id " + adherentId + " n'existe pas."));
-        return rechargeRepository.findByAdherent(adherent);
+    /**
+     * Cette méthode récupère la liste de toutes les recharges
+     * effectuées par un adhérent donné. Si l'adhérent n'existe pas,
+     * une exception est levée.
+     * @param adherentId l'identifiant de l'adhérent
+     * @return la liste des recharges associées à cet adhérent
+     */
+    public List<RechargeDTO> getRechargesByAdherent(Long adherentId) {
+        return rechargeRepository.findHistoryByAdherentId(adherentId);
     }
+
 
 }

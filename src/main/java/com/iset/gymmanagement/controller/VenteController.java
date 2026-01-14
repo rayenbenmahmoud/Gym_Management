@@ -21,7 +21,14 @@ public class VenteController {
         this.venteService = venteService;
     }
 
-    // 🛒 Créer une vente (ADMIN + EMPLOYEE)
+    /**
+     * Cette méthode permet d'enregistrer une nouvelle vente pour un adhérent.
+     * Elle vérifie le stock des produits et le solde de la carte avant validation.
+     * L'utilisateur doit être authentifié.
+     * @param request les informations de la vente (adhérent et produits)
+     * @param session la session HTTP utilisée pour vérifier l'authentification
+     * @return la vente créée
+     */
     @PostMapping
     public Vente create(
             @Valid @RequestBody VenteRequest request,
@@ -35,7 +42,12 @@ public class VenteController {
         );
     }
 
-    // 📊 Historique des ventes (ADMIN + EMPLOYEE)
+    /**
+     * Cette méthode permet de récupérer la liste de toutes les ventes enregistrées.
+     * L'utilisateur doit être authentifié.
+     * @param session la session HTTP utilisée pour vérifier l'authentification
+     * @return la liste des ventes
+     */
     @GetMapping
     public List<Vente> getAll(HttpSession session) {
 

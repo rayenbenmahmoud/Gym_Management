@@ -36,17 +36,24 @@ public class VenteService {
         this.cardRepository = cardRepository;
     }
 
+    /**
+     * Cette méthode permet de créer une nouvelle vente pour un adhérent donné.
+     * Elle vérifie la disponibilité du stock pour chaque produit,
+     * calcule le montant total de la vente, vérifie le solde de la carte,
+     * met à jour le stock des produits ainsi que le solde de la carte,
+     * puis enregistre la vente et ses produits associés.
+     * @param adherentId l'identifiant de l'adhérent
+     * @param produitsRequest la liste des produits vendus avec leurs quantités
+     * @return la vente enregistrée
+     */
     public Vente createVente(Long adherentId, List<VenteProduitRequest> produitsRequest) {
 
-        // 1️⃣ جلب المشترك
         Adherent adherent = adherentRepository.findById(adherentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Adhérent avec l'id " + adherentId + " n'existe pas."));
 
-        // 2️⃣ جلب البطاقة
         Card card = cardRepository.findByAdherent(adherent)
                 .orElseThrow(() -> new ResourceNotFoundException("Carte de l'adhérent introuvable."));
 
-        // 3️⃣ إنشاء vente جديدة
         Vente vente = new Vente();
         vente.setAdherent(adherent);
         vente.setDate(LocalDateTime.now());
@@ -60,20 +67,16 @@ public class VenteService {
             Product product = productRepository.findById(vpRequest.getProductId())
                     .orElseThrow(() -> new ResourceNotFoundException("Produit avec l'id " + vpRequest.getProductId() + " n'existe pas."));
 
-            // التحقق من stock
             if (product.getQuantiteStock() < vpRequest.getQuantite()) {
                 throw new StockUnavailableException("Stock insuffisant pour le produit: " + product.getNom());
             }
 
-            // حساب المبلغ لكل منتج
             BigDecimal lineTotal = product.getPrix().multiply(BigDecimal.valueOf(vpRequest.getQuantite()));
             total = total.add(lineTotal);
 
-            // إنقاص stock
             product.setQuantiteStock(product.getQuantiteStock() - vpRequest.getQuantite());
             productRepository.save(product);
 
-            // إنشاء VenteProduit
             VenteProduit vp = new VenteProduit();
             vp.setProduit(product);
             vp.setQuantite(vpRequest.getQuantite());
@@ -83,22 +86,24 @@ public class VenteService {
             produitsFinal.add(vp);
         }
 
-        // التحقق من solde
         if (card.getSolde().compareTo(total) < 0) {
             throw new InsufficientBalanceException("Solde insuffisant pour effectuer cette vente.");
         }
 
-        // خصم الرصيد
         card.setSolde(card.getSolde().subtract(total));
         cardRepository.save(card);
 
-        // تسجيل vente
         vente.setMontantTotal(total);
         vente.setProduits(produitsFinal);
 
         return venteRepository.save(vente);
     }
 
+    /**
+     * Cette méthode retourne la liste de toutes les ventes
+     * enregistrées dans la base de données.
+     * @return la liste des ventes
+     */
     public List<Vente> getAllVentes() {
         return venteRepository.findAll();
     }
