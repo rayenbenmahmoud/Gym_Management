@@ -1,8 +1,9 @@
 package com.iset.gymmanagement.controller;
 
 import com.iset.gymmanagement.dto.RechargeDTO;
-import com.iset.gymmanagement.entity.Recharge;
+import com.iset.gymmanagement.dto.VenteResponseDTO;
 import com.iset.gymmanagement.entity.Vente;
+import com.iset.gymmanagement.mapper.VenteMapper;
 import com.iset.gymmanagement.security.AuthUtil;
 import com.iset.gymmanagement.service.CardService;
 import com.iset.gymmanagement.service.VenteService;
@@ -19,33 +20,37 @@ public class HistoriqueController {
 
     private final VenteService venteService;
     private final CardService cardService;
+    private final VenteMapper venteMapper;
 
     public HistoriqueController(VenteService venteService,
-                                CardService cardService) {
+                                CardService cardService,
+                                VenteMapper venteMapper) {
         this.venteService = venteService;
         this.cardService = cardService;
+        this.venteMapper = venteMapper;
     }
 
     /**
-     * Cette méthode permet de récupérer l'historique de toutes les ventes
-     * enregistrées dans le système. L'utilisateur doit être authentifié.
+     * Cette méthode permet de récupérer l'historique de toutes les ventes.
+     *
      * @param session la session HTTP utilisée pour vérifier l'authentification
-     * @return la liste des ventes
+     * @return la liste des ventes sous forme de DTO
      */
     @GetMapping("/ventes")
-    public List<Vente> ventes(HttpSession session) {
+    public List<VenteResponseDTO> ventes(HttpSession session) {
 
         AuthUtil.checkLogin(session);
 
-        return venteService.getAllVentes();
+        return venteMapper.toDtoList(venteService.getAllVentes());
     }
 
     /**
      * Cette méthode permet de récupérer l'historique des recharges
-     * effectuées par un adhérent donné. L'utilisateur doit être authentifié.
+     * effectuées par un adhérent donné.
+     *
      * @param adherentId l'identifiant de l'adhérent
      * @param session la session HTTP utilisée pour vérifier l'authentification
-     * @return la liste des recharges de l'adhérent
+     * @return la liste des recharges sous forme de DTO
      */
     @GetMapping("/recharges/{adherentId}")
     public ResponseEntity<List<RechargeDTO>> getRecharges(

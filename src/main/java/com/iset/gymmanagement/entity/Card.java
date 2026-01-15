@@ -2,10 +2,17 @@ package com.iset.gymmanagement.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.*;
+
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "card")
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Card {
 
     @Id
@@ -20,46 +27,9 @@ public class Card {
 
     @NotNull(message = "L'adhérent est obligatoire")
     @OneToOne
-    @JoinColumn(name = "adherent_id", nullable = false)
+    @JoinColumn(name = "adherent_id", nullable = false, unique = true)
     private Adherent adherent;
 
     @Column(nullable = false)
     private boolean active = true;
-
-
-    public Card() {}
-
-    public Card(BigDecimal solde, Adherent adherent) {
-        this.solde = solde;
-        this.adherent = adherent;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public BigDecimal getSolde() {
-        return solde;
-    }
-
-    public void setSolde(BigDecimal solde) {
-        this.solde = solde;
-    }
-
-    public Adherent getAdherent() {
-        return adherent;
-    }
-
-    public void setAdherent(Adherent adherent) {
-        this.adherent = adherent;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
 }

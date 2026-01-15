@@ -2,14 +2,18 @@ package com.iset.gymmanagement.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "recharge")
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Recharge {
 
     @Id
@@ -28,44 +32,6 @@ public class Recharge {
 
     @NotNull(message = "L'adhérent est obligatoire")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "adherent_id")
+    @JoinColumn(name = "adherent_id", nullable = false)
     private Adherent adherent;
-
-
-    public Recharge() {}
-
-    public Recharge(LocalDateTime date, BigDecimal amount, Adherent adherent) {
-        this.date = date;
-        this.amount = amount;
-        this.adherent = adherent;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public Adherent getAdherent() {
-        return adherent;
-    }
-
-    public void setAdherent(Adherent adherent) {
-        this.adherent = adherent;
-    }
 }

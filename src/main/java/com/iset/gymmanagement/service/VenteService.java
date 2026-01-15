@@ -94,7 +94,7 @@ public class VenteService {
         cardRepository.save(card);
 
         vente.setMontantTotal(total);
-        vente.setProduits(produitsFinal);
+        vente.addProduits(produitsFinal);
 
         return venteRepository.save(vente);
     }

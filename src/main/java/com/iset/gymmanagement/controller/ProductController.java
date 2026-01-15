@@ -1,7 +1,9 @@
 package com.iset.gymmanagement.controller;
 
+import com.iset.gymmanagement.dto.ProductDTO;
 import com.iset.gymmanagement.entity.Product;
 import com.iset.gymmanagement.entity.User;
+import com.iset.gymmanagement.mapper.ProductMapper;
 import com.iset.gymmanagement.security.AuthUtil;
 import com.iset.gymmanagement.service.ProductService;
 import jakarta.servlet.http.HttpSession;
@@ -9,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -16,27 +19,33 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductMapper productMapper;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService,
+                             ProductMapper productMapper) {
         this.productService = productService;
+        this.productMapper = productMapper;
     }
 
     /**
      * Cette méthode permet d'ajouter un nouveau produit au système.
      * Seul un administrateur authentifié est autorisé à effectuer cette action.
-     * @param product les informations du produit à ajouter
+     * @param dto les informations du produit à ajouter
      * @param session la session HTTP utilisée pour vérifier l'authentification
      * @return le produit créé
      */
     @PostMapping
-    public Product createProduct(
-            @Valid @RequestBody Product product,
+    public ProductDTO createProduct(
+            @Valid @RequestBody ProductDTO dto,
             HttpSession session) {
 
         User user = AuthUtil.checkLogin(session);
         AuthUtil.checkAdmin(user);
 
-        return productService.addProduct(product);
+        Product product = productMapper.toEntity(dto);
+        Product saved = productService.addProduct(product);
+
+        return productMapper.toDTO(saved);
     }
 
     /**
@@ -46,11 +55,14 @@ public class ProductController {
      * @return la liste des produits
      */
     @GetMapping
-    public List<Product> getAllProducts(HttpSession session) {
+    public List<ProductDTO> getAllProducts(HttpSession session) {
 
         AuthUtil.checkLogin(session);
 
-        return productService.getAllProducts();
+        return productService.getAllProducts()
+                .stream()
+                .map(productMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -62,33 +74,38 @@ public class ProductController {
      * @return le produit correspondant
      */
     @GetMapping("/{id}")
-    public Product getProductById(
+    public ProductDTO getProductById(
             @PathVariable Long id,
             HttpSession session) {
 
         AuthUtil.checkLogin(session);
 
-        return productService.getProductById(id);
+        return productMapper.toDTO(
+                productService.getProductById(id)
+        );
     }
 
     /**
      * Cette méthode permet de mettre à jour les informations d'un produit existant.
      * Seul un administrateur authentifié est autorisé.
      * @param id l'identifiant du produit à modifier
-     * @param product les nouvelles informations du produit
+     * @param dto les nouvelles informations du produit
      * @param session la session HTTP utilisée pour vérifier l'authentification
      * @return le produit mis à jour
      */
     @PutMapping("/{id}")
-    public Product updateProduct(
+    public ProductDTO updateProduct(
             @PathVariable Long id,
-            @Valid @RequestBody Product product,
+            @Valid @RequestBody ProductDTO dto,
             HttpSession session) {
 
         User user = AuthUtil.checkLogin(session);
         AuthUtil.checkAdmin(user);
 
-        return productService.updateProduct(id, product);
+        Product product = productMapper.toEntity(dto);
+        Product updated = productService.updateProduct(id, product);
+
+        return productMapper.toDTO(updated);
     }
 
     /**

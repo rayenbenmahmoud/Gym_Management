@@ -58,6 +58,7 @@ public class AdherentService {
         existing.setPrenom(updated.getPrenom());
         existing.setEmail(updated.getEmail());
         existing.setTelephone(updated.getTelephone());
+        existing.setDateNaissance(updated.getDateNaissance());
 
         return adherentRepository.save(existing);
     }

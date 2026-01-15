@@ -5,9 +5,12 @@ import com.iset.gymmanagement.entity.Recharge;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 public interface RechargeRepository extends JpaRepository<Recharge, Long> {
+
+    List<Recharge> findByAdherentId(Long adherentId);
 
     @Query("""
         SELECT new com.iset.gymmanagement.dto.RechargeDTO(

@@ -2,16 +2,20 @@ package com.iset.gymmanagement.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.*;
 import org.hibernate.annotations.*;
 
 import java.time.LocalDate;
-
-
 
 @Entity
 @Table(name = "adherent")
 @SQLDelete(sql = "UPDATE adherent SET deleted = true WHERE id=?")
 @SQLRestriction("deleted = false")
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Adherent {
 
     @Id
@@ -41,57 +45,5 @@ public class Adherent {
     @Column(name = "date_naissance")
     private LocalDate dateNaissance;
 
-    private boolean deleted = Boolean.FALSE;
-
-    public Adherent() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public LocalDate getDateNaissance() {
-        return dateNaissance;
-    }
-
-    public void setDateNaissance(LocalDate dateNaissance) {
-        this.dateNaissance = dateNaissance;
-    }
-
-    public  boolean getDeleted(){return deleted;}
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+    private boolean deleted = false;
 }
