@@ -22,26 +22,33 @@ public class AdherentService {
         this.cardRepository = cardRepository;
     }
 
-    // 1️⃣ Ajouter un adhérent
+    /**
+     * Cette méthode ajoute un nouvel adhérent dans la base de données
+     * et crée automatiquement une carte associée avec un solde initial égal à zéro.
+     * @param adherent l'adhérent à ajouter
+     * @return l'adhérent enregistré
+     */
     public Adherent addAdherent(Adherent adherent) {
 
-        // حفظ المشترك أولًا
         Adherent savedAdherent = adherentRepository.save(adherent);
 
-        // إنشاء بطاقة جديدة
         Card card = new Card();
         card.setSolde(BigDecimal.ZERO);
 
-        // ربط البطاقة بالمشترك
         card.setAdherent(savedAdherent);
 
-        // حفظ البطاقة
         cardRepository.save(card);
 
         return savedAdherent;
     }
 
-    // 2️⃣ Modifier un adhérent
+    /**
+     * Cette méthode met à jour les informations d'un adhérent existant
+     * en utilisant son identifiant. Si l'adhérent n'existe pas, une exception est levée.
+     * @param id l'identifiant de l'adhérent à modifier
+     * @param updated les nouvelles informations de l'adhérent
+     * @return l'adhérent mis à jour
+     */
     public Adherent updateAdherent(Long id, Adherent updated) {
 
         Adherent existing = adherentRepository.findById(id)
@@ -51,26 +58,49 @@ public class AdherentService {
         existing.setPrenom(updated.getPrenom());
         existing.setEmail(updated.getEmail());
         existing.setTelephone(updated.getTelephone());
+        existing.setDateNaissance(updated.getDateNaissance());
 
         return adherentRepository.save(existing);
     }
 
-    // 3️⃣ Supprimer un adhérent
+    /**
+     * Supprime logiquement un adhérent.
+     * L'adhérent est marqué comme supprimé (soft delete)
+     * et sa carte est désactivée.
+     */
     public void deleteAdherent(Long id) {
 
-        if (!adherentRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Adhérent avec l'id " + id + " n'existe pas.");
-        }
+        Adherent adherent = adherentRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Adhérent avec l'id " + id + " n'existe pas.")
+                );
 
-        adherentRepository.deleteById(id);
+        adherent.setDeleted(true);
+        adherentRepository.save(adherent);
+
+        cardRepository.findByAdherent(adherent)
+                .ifPresent(card -> {
+                    card.setActive(false);
+                    cardRepository.save(card);
+                });
     }
 
-    // 4️⃣ Liste des adhérents
+
+    /**
+     * Cette méthode retourne la liste de tous les adhérents
+     * enregistrés dans la base de données.
+     * @return liste des adhérents
+     */
     public List<Adherent> getAllAdherents() {
         return adherentRepository.findAll();
     }
 
-    // 5️⃣ Détail d’un adhérent
+    /**
+     * Cette méthode récupère un adhérent en utilisant son identifiant.
+     * Si aucun adhérent n'est trouvé, une exception est levée.
+     * @param id l'identifiant de l'adhérent recherché
+     * @return l'adhérent correspondant à l'identifiant
+     */
     public Adherent getAdherentById(Long id) {
         return adherentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Adhérent avec l'id " + id + " n'existe pas."));

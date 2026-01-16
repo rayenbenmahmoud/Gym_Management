@@ -2,12 +2,19 @@ package com.iset.gymmanagement.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import java.math.BigDecimal;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "vente_produit")
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class VenteProduit {
 
     @Id
@@ -15,15 +22,14 @@ public class VenteProduit {
     private Long id;
 
     @NotNull(message = "La vente est obligatoire")
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "vente_id", nullable = false)
-    @JsonBackReference
     private Vente vente;
 
-
     @NotNull(message = "Le produit est obligatoire")
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "produit_id", nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Product produit;
 
     @NotNull(message = "La quantité est obligatoire")
@@ -34,50 +40,6 @@ public class VenteProduit {
     @NotNull(message = "Le prix unitaire est obligatoire")
     @DecimalMin(value = "0.01", inclusive = true, message = "Le prix unitaire doit être supérieur à 0")
     @Digits(integer = 10, fraction = 2, message = "Format du prix unitaire invalide")
-    @Column(name = "prix_unitaire", nullable = false, precision = 12, scale = 2) // تعديل للدقة
+    @Column(name = "prix_unitaire", nullable = false, precision = 12, scale = 2)
     private BigDecimal prixUnitaire;
-
-    public VenteProduit() {}
-
-    // ===== Getters & Setters =====
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Vente getVente() {
-        return vente;
-    }
-
-    public void setVente(Vente vente) {
-        this.vente = vente;
-    }
-
-    public Product getProduit() {
-        return produit;
-    }
-
-    public void setProduit(Product produit) {
-        this.produit = produit;
-    }
-
-    public Integer getQuantite() {
-        return quantite;
-    }
-
-    public void setQuantite(Integer quantite) {
-        this.quantite = quantite;
-    }
-
-    public BigDecimal getPrixUnitaire() {
-        return prixUnitaire;
-    }
-
-    public void setPrixUnitaire(BigDecimal prixUnitaire) {
-        this.prixUnitaire = prixUnitaire;
-    }
 }

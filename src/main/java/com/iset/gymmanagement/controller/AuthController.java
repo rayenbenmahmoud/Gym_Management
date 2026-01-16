@@ -16,7 +16,15 @@ public class AuthController {
         this.userRepository = userRepository;
     }
 
-    // 🔐 LOGIN
+    /**
+     * Cette méthode permet à un utilisateur de se connecter
+     * en vérifiant son nom d'utilisateur et son mot de passe.
+     * Si les informations sont incorrectes, une exception est levée.
+     * En cas de succès, l'utilisateur est enregistré dans la session HTTP.
+     * @param loginRequest les informations de connexion (username et password)
+     * @param session la session HTTP utilisée pour stocker l'utilisateur connecté
+     * @return un message indiquant le succès de la connexion
+     */
     @PostMapping("/login")
     public String login(@RequestBody User loginRequest, HttpSession session) {
 
@@ -28,13 +36,17 @@ public class AuthController {
             throw new UnauthorizedException("Identifiants invalides");
         }
 
-        // ✅ Sauvegarder l'utilisateur dans la session
         session.setAttribute("USER", user);
 
         return "Connexion réussie";
     }
 
-    // 🔓 LOGOUT
+    /**
+     * Cette méthode permet de déconnecter l'utilisateur actuellement connecté
+     * en invalidant la session HTTP.
+     * @param session la session HTTP à invalider
+     * @return un message indiquant le succès de la déconnexion
+     */
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

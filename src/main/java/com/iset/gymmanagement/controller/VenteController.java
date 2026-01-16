@@ -1,9 +1,11 @@
 package com.iset.gymmanagement.controller;
 
+import com.iset.gymmanagement.dto.*;
 import com.iset.gymmanagement.entity.Vente;
+import com.iset.gymmanagement.mapper.VenteMapper;
 import com.iset.gymmanagement.security.AuthUtil;
 import com.iset.gymmanagement.service.VenteService;
-import com.iset.gymmanagement.dto.VenteRequest;
+
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
@@ -16,31 +18,48 @@ import java.util.List;
 public class VenteController {
 
     private final VenteService venteService;
+    private final VenteMapper venteMapper;
 
-    public VenteController(VenteService venteService) {
+    public VenteController(VenteService venteService, VenteMapper venteMapper) {
         this.venteService = venteService;
+        this.venteMapper = venteMapper;
     }
 
-    // 🛒 Créer une vente (ADMIN + EMPLOYEE)
+    /**
+     * Cette méthode permet d'enregistrer une nouvelle vente.
+     *
+     * @param request les informations de la vente (adhérent et produits)
+     * @param session la session HTTP utilisée pour vérifier l'authentification
+     * @return la vente créée
+     */
     @PostMapping
-    public Vente create(
+    public VenteResponseDTO create(
             @Valid @RequestBody VenteRequest request,
             HttpSession session) {
 
         AuthUtil.checkLogin(session);
 
-        return venteService.createVente(
+        Vente vente = venteService.createVente(
                 request.getAdherentId(),
                 request.getProduits()
         );
+
+        return venteMapper.toDto(vente);
     }
 
-    // 📊 Historique des ventes (ADMIN + EMPLOYEE)
+    /**
+     * Cette méthode permet de récupérer la liste de toutes les ventes enregistrées.
+     *
+     * @param session la session HTTP utilisée pour vérifier l'authentification
+     * @return la liste des ventes
+     */
     @GetMapping
-    public List<Vente> getAll(HttpSession session) {
+    public List<VenteResponseDTO> getAll(HttpSession session) {
 
         AuthUtil.checkLogin(session);
 
-        return venteService.getAllVentes();
+        return venteMapper.toDtoList(
+                venteService.getAllVentes()
+        );
     }
 }
