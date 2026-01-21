@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des produits</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Système de Gestion de Salle de Sport</h1>
+    <nav>
+        <a href="dashboard.html">Tableau de bord</a>
+        <a href="adherents.html">Adhérents</a>
+        <a href="produits.html">Produits</a>
+        <a href="ventes.html">Ventes</a>
+        <a href="#" id="logoutBtn">Déconnexion</a>
+    </nav>
+</header>
+
+<div class="toolbar">
+    <h2>Liste des produits</h2>
+    <button id="addBtn" onclick="showAddForm()">Ajouter</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Prix (DT)</th>
+            <th>Quantité en stock</th>
+            <th>Image</th>
+            <th id="actions">Actions</th>
+        </tr>
+    </thead>
+    <tbody id="productsTable"></tbody>
+</table>
+
+<!-- MODAL PRODUIT -->
+<div class="modal" id="productModal">
+    <div class="modal-content">
+        <h2 id="formTitle">Ajouter un produit</h2>
+
+        <form id="productForm" onsubmit="saveProduct(event)" enctype="multipart/form-data">
+            <input type="hidden" id="productId">
+
+            <label>Nom</label>
+            <input type="text" id="nom" required minlength="2">
+
+            <label>Description</label>
+            <input type="text" id="description" required minlength="2">
+
+            <label>Prix</label>
+            <input type="text" id="prix" required>
+
+            <label>Quantité en stock</label>
+            <input type="number" id="quantiteStock" required min="0">
+
+            <label>Image (Fichier)</label>
+            <input type="file" id="imageFile" accept="image/*">
+
+            <div class="form-actions">
+                <button type="submit">Enregistrer</button>
+                <button type="button" onclick="hideForm()">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/produits.js"></script>
+<script src="js/logout.js"></script>
+</body>
+</html>

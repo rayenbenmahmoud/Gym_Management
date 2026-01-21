@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Système de Gestion de Salle de Sport</h1>
+    <nav>
+        <a href="dashboard.html">Tableau de bord</a>
+        <a href="adherents.html">Adhérents</a>
+        <a href="produits.html">Produits</a>
+        <a href="ventes.html">Ventes</a>
+        <a href="#" id="logoutBtn">Déconnexion</a>
+    </nav>
+</header>
+
+
+<h1>Tableau de bord</h1>
+
+<div class="card">
+    <h3>Total des ventes</h3>
+    <p id="totalVentes">0</p>
+</div>
+
+<div class="card">
+    <h3>Produits les plus vendus</h3>
+    <ul id="topProduits"></ul>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/logout.js"></script>
+
+</body>
+</html>
