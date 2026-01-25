@@ -6,7 +6,7 @@ document.getElementById("logoutBtn").addEventListener("click", logout);
 
 async function logout() {
 
-    await fetch(`${BASE_URL}/auth/logout`, {
+    await fetch(`/auth/logout`, {
         method: "POST",
         credentials: "include"
     });

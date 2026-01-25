@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Chargement utilisateur
 // ==================
 async function loadCurrentUser() {
-    const response = await fetch(`${BASE_URL}/auth/me`, {
+    const response = await fetch(`/auth/me`, {
         credentials: "include"
     });
 
@@ -57,7 +57,7 @@ function applyPermissions() {
 // Chargement des produits
 // ==================
 async function loadProducts() {
-    const response = await fetch(`${BASE_URL}/api/products`, {
+    const response = await fetch(`/api/products`, {
         credentials: "include"
     });
 
@@ -80,7 +80,7 @@ async function loadProducts() {
             <td>
                 ${
                     p.image
-                        ? `<img src="${BASE_URL}${p.image}" width="50">`
+                        ? `<img src="${p.image}" width="50">`
                         : ""
                 }
             </td>
@@ -136,14 +136,14 @@ async function saveProduct(event) {
 
     if (id) {
         // modification
-        await fetch(`${BASE_URL}/api/products/${id}`, {
+        await fetch(`/api/products/${id}`, {
             method: "PUT",
             credentials: "include",
             body: formData
         });
     } else {
         // ajout
-        await fetch(`${BASE_URL}/api/products`, {
+        await fetch(`/api/products`, {
             method: "POST",
             credentials: "include",
             body: formData
@@ -163,7 +163,7 @@ async function editProduct(id) {
         return;
     }
 
-    const response = await fetch(`${BASE_URL}/api/products/${id}`, {
+    const response = await fetch(`/api/products/${id}`, {
         credentials: "include"
     });
 
@@ -191,7 +191,7 @@ async function deleteProduct(id) {
 
     if (!confirm("Confirmer la suppression ?")) return;
 
-    await fetch(`${BASE_URL}/api/products/${id}`, {
+    await fetch(`/api/products/${id}`, {
         method: "DELETE",
         credentials: "include"
     });

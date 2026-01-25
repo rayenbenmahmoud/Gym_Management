@@ -4,7 +4,7 @@
  */
 async function checkSession() {
 
-    const response = await fetch(`${BASE_URL}/api/dashboard`, {
+    const response = await fetch(`/api/dashboard`, {
         method: "GET",
         credentials: "include"
     });

@@ -7,10 +7,6 @@ import com.iset.gymmanagement.security.AuthUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(
-        origins = "http://localhost:5500",
-        allowCredentials = "true"
-)
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

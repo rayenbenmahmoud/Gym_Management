@@ -7,6 +7,7 @@ import com.iset.gymmanagement.mapper.ProductMapper;
 import com.iset.gymmanagement.security.AuthUtil;
 import com.iset.gymmanagement.service.ProductService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,16 +21,19 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@CrossOrigin(
-        origins = "http://localhost:5500",
-        allowCredentials = "true"
-)
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductService productService;
     private final ProductMapper productMapper;
+
+    /**
+     * Base URL du backend (ex: http://localhost:8080)
+     * Définie via application.properties / variables d'environnement
+     */
+    @Value("${app.base-url}")
+    private String baseUrl;
 
     public ProductController(
             ProductService productService,
@@ -39,16 +43,15 @@ public class ProductController {
     }
 
     /**
+     * Construit l'URL complète de l'image à partir de son nom
+     */
+    private String buildImageUrl(String imageName) {
+        return baseUrl + "/uploads/" + imageName;
+    }
+
+    /**
      * Cette méthode permet de créer un nouveau produit.
      * L'accès est réservé aux utilisateurs ayant le rôle ADMIN.
-     *
-     * @param nom le nom du produit
-     * @param description la description du produit
-     * @param prix le prix du produit
-     * @param quantiteStock la quantité en stock
-     * @param imageFile l'image associée au produit
-     * @param session la session HTTP utilisée pour vérifier l'authentification
-     * @return le produit créé
      */
     @PostMapping
     public ProductDTO create(
@@ -82,10 +85,10 @@ public class ProductController {
         }
 
         Product saved = productService.addProduct(product);
-
         ProductDTO result = productMapper.toDTO(saved);
+
         if (result.getImage() != null) {
-            result.setImage("/uploads/" + result.getImage());
+            result.setImage(buildImageUrl(result.getImage()));
         }
 
         return result;
@@ -94,9 +97,6 @@ public class ProductController {
     /**
      * Cette méthode retourne la liste de tous les produits.
      * L'utilisateur doit être authentifié.
-     *
-     * @param session la session HTTP utilisée pour vérifier l'authentification
-     * @return la liste des produits
      */
     @GetMapping
     public List<ProductDTO> getAll(HttpSession session) {
@@ -108,7 +108,7 @@ public class ProductController {
                 .map(product -> {
                     ProductDTO dto = productMapper.toDTO(product);
                     if (dto.getImage() != null) {
-                        dto.setImage("/uploads/" + dto.getImage());
+                        dto.setImage(buildImageUrl(dto.getImage()));
                     }
                     return dto;
                 })
@@ -118,11 +118,6 @@ public class ProductController {
     /**
      * Cette méthode permet de récupérer les informations d'un produit
      * à partir de son identifiant.
-     * L'utilisateur doit être authentifié.
-     *
-     * @param id l'identifiant du produit
-     * @param session la session HTTP utilisée pour vérifier l'authentification
-     * @return le produit correspondant à l'identifiant
      */
     @GetMapping("/{id}")
     public ProductDTO getById(
@@ -136,7 +131,7 @@ public class ProductController {
         );
 
         if (dto.getImage() != null) {
-            dto.setImage("/uploads/" + dto.getImage());
+            dto.setImage(buildImageUrl(dto.getImage()));
         }
 
         return dto;
@@ -145,16 +140,6 @@ public class ProductController {
     /**
      * Cette méthode permet de mettre à jour les informations
      * d'un produit existant.
-     * L'accès est réservé aux utilisateurs ayant le rôle ADMIN.
-     *
-     * @param id l'identifiant du produit à modifier
-     * @param nom le nom du produit
-     * @param description la description du produit
-     * @param prix le prix du produit
-     * @param quantiteStock la quantité en stock
-     * @param imageFile la nouvelle image du produit
-     * @param session la session HTTP utilisée pour vérifier l'authentification
-     * @return le produit mis à jour
      */
     @PutMapping("/{id}")
     public ProductDTO update(
@@ -188,10 +173,10 @@ public class ProductController {
         }
 
         Product updated = productService.updateProduct(id, product);
-
         ProductDTO result = productMapper.toDTO(updated);
+
         if (result.getImage() != null) {
-            result.setImage("/uploads/" + result.getImage());
+            result.setImage(buildImageUrl(result.getImage()));
         }
 
         return result;
@@ -200,10 +185,6 @@ public class ProductController {
     /**
      * Cette méthode permet de supprimer un produit
      * à partir de son identifiant.
-     * L'accès est réservé aux utilisateurs ayant le rôle ADMIN.
-     *
-     * @param id l'identifiant du produit à supprimer
-     * @param session la session HTTP utilisée pour vérifier l'authentification
      */
     @DeleteMapping("/{id}")
     public void delete(

@@ -22,7 +22,7 @@ async function login(event) {
     };
 
     try {
-        const response = await fetch(`${BASE_URL}/auth/login`, {
+        const response = await fetch(`/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

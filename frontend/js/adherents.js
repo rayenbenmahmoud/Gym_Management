@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Chargement utilisateur
 // ==================
 async function loadCurrentUser() {
-    const response = await fetch(`${BASE_URL}/auth/me`, {
+    const response = await fetch(`/auth/me`, {
         credentials: "include"
     });
 
@@ -72,7 +72,7 @@ function setMaxBirthDate() {
 // Chargement des adhérents
 // ==================
 async function loadAdherents() {
-    const response = await fetch(`${BASE_URL}/api/adherents`, {
+    const response = await fetch(`/api/adherents`, {
         credentials: "include"
     });
 
@@ -147,7 +147,7 @@ async function saveAdherent(event) {
 
     if (id) {
         // modification
-        await fetch(`${BASE_URL}/api/adherents/${id}`, {
+        await fetch(`/api/adherents/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -155,7 +155,7 @@ async function saveAdherent(event) {
         });
     } else {
         // ajout
-        await fetch(`${BASE_URL}/api/adherents`, {
+        await fetch(`/api/adherents`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -182,7 +182,7 @@ function closeCardModal() {
 }
 
 async function loadSolde(adherentId) {
-    const res = await fetch(`${BASE_URL}/api/cards/solde/${adherentId}`, {
+    const res = await fetch(`/api/cards/solde/${adherentId}`, {
         credentials: "include"
     });
     const solde = await res.json();
@@ -190,7 +190,7 @@ async function loadSolde(adherentId) {
 }
 
 async function loadRecharges(adherentId) {
-    const res = await fetch(`${BASE_URL}/api/cards/recharges/${adherentId}`, {
+    const res = await fetch(`/api/cards/recharges/${adherentId}`, {
         credentials: "include"
     });
 
@@ -224,7 +224,7 @@ async function rechargeCard() {
     }
 
     await fetch(
-        `${BASE_URL}/api/cards/recharge/${selectedAdherentId}?montant=${amount}`,
+        `/api/cards/recharge/${selectedAdherentId}?montant=${amount}`,
         {
             method: "POST",
             credentials: "include"
@@ -245,7 +245,7 @@ async function editAdherent(id) {
         return;
     }
 
-    const response = await fetch(`${BASE_URL}/api/adherents/${id}`, {
+    const response = await fetch(`/api/adherents/${id}`, {
         credentials: "include"
     });
 
@@ -273,7 +273,7 @@ async function deleteAdherent(id) {
 
     if (!confirm("Confirmer la suppression ?")) return;
 
-    await fetch(`${BASE_URL}/api/adherents/${id}`, {
+    await fetch(`/api/adherents/${id}`, {
         method: "DELETE",
         credentials: "include"
     });

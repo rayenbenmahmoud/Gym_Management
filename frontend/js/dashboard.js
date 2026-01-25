@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", loadDashboard);
 async function loadDashboard() {
 
     try {
-        const response = await fetch(`${BASE_URL}/api/dashboard`, {
+        const response = await fetch(`/api/dashboard`, {
             method: "GET",
             credentials: "include" // nécessaire pour la session
         });

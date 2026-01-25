@@ -13,10 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-@CrossOrigin(
-        origins = "http://localhost:5500",
-        allowCredentials = "true"
-)
 @RestController
 @RequestMapping("/api/cards")
 public class CardController {

@@ -1,5 +1,5 @@
-INSERT INTO users (username, password, role)
+INSERT IGNORE INTO users (username, password, role)
 VALUES ('admin', 'admin', 'ADMIN');
 
-INSERT INTO users (username, password, role)
+INSERT IGNORE INTO users (username, password, role)
 VALUES ('employee', 'employee', 'EMPLOYEE');

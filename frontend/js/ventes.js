@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Charger toutes les ventes
 // ==================
 async function loadVentes() {
-    const response = await fetch(`${BASE_URL}/api/ventes`, {
+    const response = await fetch(`/api/ventes`, {
         credentials: "include"
     });
 
@@ -52,7 +52,7 @@ async function loadVentes() {
 // Charger les adhérents (select)
 // ==================
 async function loadAdherents() {
-    const res = await fetch(`${BASE_URL}/api/adherents`, {
+    const res = await fetch(`/api/adherents`, {
         credentials: "include"
     });
 
@@ -74,7 +74,7 @@ async function loadAdherents() {
 let allProducts = [];
 
 async function loadProducts() {
-    const res = await fetch(`${BASE_URL}/api/products`, {
+    const res = await fetch(`/api/products`, {
         credentials: "include"
     });
 
@@ -135,7 +135,7 @@ async function saveVente(event) {
         produits: produits
     };
 
-    const res = await fetch(`${BASE_URL}/api/ventes`, {
+    const res = await fetch(`/api/ventes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
