@@ -1,0 +1,259 @@
+/* ================== RESET GLOBAL ================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+/* ================== BASE ================== */
+body {
+    background-color: #f4f6f8;
+    color: #333;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+/* ================== HEADER ================== */
+header {
+    background-color: #1e272e;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+header h1 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* ================== NAVIGATION ================== */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #485460;
+}
+
+/* ================== TOOLBAR ================== */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+/* ================== BOUTONS ================== */
+button {
+    background-color: #0984e3;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #74b9ff;
+}
+
+button[type="button"] {
+    background-color: #636e72;
+}
+
+button[type="button"]:hover {
+    background-color: #b2bec3;
+}
+
+/* ================== TABLEAUX ================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+thead {
+    background-color: #2d3436;
+    color: #ffffff;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+td img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* ================== MODAL ================== */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* ================== FORMULAIRE ================== */
+form label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+form input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form input:focus {
+    outline: none;
+    border-color: #0984e3;
+}
+
+/* ================== LOGIN ================== */
+#loginForm {
+    max-width: 350px;
+    margin: 80px auto;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+}
+
+#errorMessage {
+    text-align: center;
+    margin-top: 10px;
+    color: red;
+}
+
+/* ================== DASHBOARD ================== */
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #0984e3;
+}
+
+/* ================== LISTES ================== */
+ul {
+    list-style: none;
+}
+
+ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* ================== CARD MODAL ================== */
+.solde {
+    margin: 15px 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.history-table th,
+.history-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.history-table th {
+    background-color: #f2f2f2;
+    color: #2c3e50;
+}
+
+.recharge-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.recharge-box input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    th, td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}

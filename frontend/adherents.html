@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des adhérents</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Système de Gestion de Salle de Sport</h1>
+    <nav>
+        <a href="dashboard.html">Tableau de bord</a>
+        <a href="adherents.html">Adhérents</a>
+        <a href="produits.html">Produits</a>
+        <a href="ventes.html">Ventes</a>
+        <a href="#" id="logoutBtn">Déconnexion</a>
+    </nav>
+</header>
+
+<div class="toolbar">
+    <h2>Liste des adhérents</h2>
+    <button id="addBtn" onclick="showAddForm()">Ajouter</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Date de naissance</th>
+            <th>Carte</th>
+            <th id="actions">Actions</th>
+        </tr>
+    </thead>
+    <tbody id="adherentsTable"></tbody>
+</table>
+
+<!-- MODAL ADHERENT -->
+<div class="modal" id="adherentModal">
+    <div class="modal-content">
+        <h2 id="formTitle">Ajouter un adhérent</h2>
+
+        <form id="adherentForm" onsubmit="saveAdherent(event)">
+            <input type="hidden" id="adherentId">
+
+            <label>Nom</label>
+            <input type="text" id="nom" required minlength="2">
+
+            <label>Prénom</label>
+            <input type="text" id="prenom" required minlength="2">
+
+            <label>Email</label>
+            <input type="email" id="email" required>
+
+            <label>Téléphone</label>
+            <input type="text" id="telephone" required>
+
+            <label>Date de naissance</label>
+            <input type="date" id="dateNaissance" required>
+
+            <div class="form-actions">
+                <button type="submit">Enregistrer</button>
+                <button type="button" onclick="hideForm()">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL CARD -->
+<div class="modal" id="cardModal">
+    <div class="modal-content">
+
+        <h2>Carte de l'adhérent</h2>
+
+        <p class="solde">
+            Solde : <strong><span id="cardSolde">0</span> DT</strong>
+        </p>
+
+        <h3>Historique des recharges</h3>
+
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Montant (DT)</th>
+                </tr>
+            </thead>
+            <tbody id="rechargeList">
+                <!-- rempli par JS -->
+            </tbody>
+        </table>
+
+        <div id="rechargeSection" class="recharge-box">
+            <input type="number" id="rechargeAmount" placeholder="Montant">
+            <button onclick="rechargeCard()">Recharger</button>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" onclick="closeCardModal()">Fermer</button>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="js/adherents.js"></script>
+<script src="js/logout.js"></script>
+</body>
+</html>

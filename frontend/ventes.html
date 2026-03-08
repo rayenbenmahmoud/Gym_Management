@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des ventes</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Système de Gestion de Salle de Sport</h1>
+    <nav>
+        <a href="dashboard.html">Tableau de bord</a>
+        <a href="adherents.html">Adhérents</a>
+        <a href="produits.html">Produits</a>
+        <a href="ventes.html">Ventes</a>
+        <a href="#" id="logoutBtn">Déconnexion</a>
+    </nav>
+</header>
+
+<div class="toolbar">
+    <h2>Liste des ventes</h2>
+    <button onclick="showAddForm()">Nouvelle vente</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Adhérent</th>
+            <th>Montant total (DT)</th>
+            <th>Détails</th>
+        </tr>
+    </thead>
+    <tbody id="ventesTable"></tbody>
+</table>
+
+<!-- MODAL VENTE -->
+<div class="modal" id="venteModal">
+    <div class="modal-content">
+        <h2>Créer une vente</h2>
+
+        <form id="venteForm" onsubmit="saveVente(event)">
+            <label>Adhérent</label>
+            <select id="adherentSelect" required></select>
+
+            <label>Produits</label>
+            <div id="productsContainer"></div>
+
+            <button type="button" onclick="addProductLine()">+ Ajouter produit</button>
+
+            <div class="form-actions">
+                <button type="submit">Valider</button>
+                <button type="button" onclick="hideForm()">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DETAILS VENTE -->
+<div class="modal" id="detailsModal">
+    <div class="modal-content">
+        <h2>Détails de la vente</h2>
+
+        <div id="detailsContent"></div>
+
+        <div class="form-actions">
+            <button type="button" onclick="hideDetails()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/ventes.js"></script>
+<script src="js/logout.js"></script>
+</body>
+</html>
