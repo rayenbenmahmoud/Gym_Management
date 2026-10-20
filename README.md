@@ -1,6 +1,6 @@
 # Système de Gestion de Salle de Sport
 
-Application web de gestion d’une salle de sport.
+Application web de gestion de stock et de ventes pour une salle de sport.
 
 ## Fonctionnalités
 
@@ -11,40 +11,45 @@ Application web de gestion d’une salle de sport.
 - Gestion des produits (CRUD pour Admin)
 - Gestion des ventes
 - Gestion des rôles et des permissions
-- Déconnexion
 
-## Technologies utilisées
+## Technologies
 
 - Back-end : Spring Boot, Spring Data JPA
 - Front-end : HTML, CSS, JavaScript
-- Base de données : MySQL (initialisée automatiquement via Docker)
+- Base de données : MySQL
 - Documentation API : Swagger
 - Conteneurisation : Docker
-- Gestion de version : Git, GitHub
 
-## Lancer le projet avec Docker
+## Prérequis
 
-1. Cloner le projet
-2. Ouvrir un terminal à la racine du projet
-3. Lancer la commande : docker compose up --build
-   
-## Tester le projet
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installé **et lancé**
+  (l'icône Docker doit indiquer "Running")
 
-- **Site Web (Front-end)** : [http://localhost](http://localhost)  
-  > Pour se connecter et tester l'application comme un utilisateur normal.
+## Lancer le projet
 
-- **API Back-end (Swagger)** : [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)  
-  > Pour explorer et tester les endpoints de l'API (GET, POST, PUT, DELETE).
+1. Télécharger le projet (bouton vert **Code → Download ZIP**) puis le décompresser
+2. Ouvrir un terminal dans le dossier du projet
+3. Exécuter :
 
-### Comptes utilisateurs déjà créés
+```bash
+docker compose up --build
+```
 
-| Rôle     | Utilisateur | Mot de passe |
-|----------|------------|-------------|
-| ADMIN    | admin      | admin       |
-| EMPLOYEE | employee   | employee    |
+## Accès
 
-### Base de données MySQL
+| Service | URL |
+|---|---|
+| Site web | http://localhost |
+| API (Swagger) | http://localhost:8080/swagger-ui/index.html |
 
-- Utilisateur : `gym` / Mot de passe : `gym`  
-> La base `gym_management` et les tables sont créées automatiquement.
+## Comptes de test
 
+| Rôle | Utilisateur | Mot de passe |
+|---|---|---|
+| ADMIN | admin | admin |
+| EMPLOYEE | employee | employee |
+
+## Base de données
+
+MySQL (utilisateur `gym` / mot de passe `gym`). La base `gym_management`
+et ses tables sont créées automatiquement.
